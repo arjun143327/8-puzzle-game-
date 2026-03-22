@@ -13,7 +13,7 @@ const ALGO_INFO = {
   DFS:   { color: '#EA4335', desc: 'Deep first, then backtracks. Not optimal.', tag: 'Uninformed' },
   GBFS:  { color: '#FBBC04', desc: 'Closest-looking node first. Fast but not optimal.', tag: 'Informed' },
   'A*':  { color: '#34A853', desc: 'f(n) = g(n) + h(n). Optimal and efficient.', tag: 'Informed' },
-  ADFS:  { color: '#8B5CF6', desc: 'A* selects, DFS bursts. Fewest nodes expanded.', tag: 'Novel Hybrid' },
+  ADFS:  { color: '#8B5CF6', desc: 'IDA*: re-explores per threshold. Least memory, more nodes than A*.', tag: 'IDA*' },
   Human: { color: '#06B6D4', desc: 'Click tiles to slide. Race the clock!', tag: 'Play Mode' },
 };
 

@@ -53,6 +53,7 @@ export const usePuzzleStore = create((set, get) => ({
     pathLength: null,
     timeMs: 0,
     f: null, g: null, h: null,
+    threshold: null,
   },
   moveLog: [],
 
@@ -140,6 +141,7 @@ export const usePuzzleStore = create((set, get) => ({
           pathLength: path.length > 0 ? path.length - 1 : null,
           timeMs: result.timeMs,
           f: result.f, g: result.g, h: result.h,
+          threshold: result.threshold ?? null,
         },
       });
       return;
@@ -251,6 +253,7 @@ export const usePuzzleStore = create((set, get) => ({
         f: result.f ?? null,
         g: result.g ?? null,
         h: result.h ?? null,
+        threshold: result.threshold ?? null,
       },
       moveLog: newLog,
     });

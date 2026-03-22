@@ -109,6 +109,7 @@ export class ADFS {
       f: this.currentNode?.f ?? null,
       g: this.currentNode?.g ?? null,
       h: this.currentNode?.h ?? null,
+      threshold: this.threshold,
       timeMs: performance.now() - (this.startTime || performance.now()),
     };
   }
