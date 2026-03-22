@@ -99,23 +99,6 @@ const StatsPanel = () => {
               </div>
             )}
 
-            {/* IDA* threshold — only for ADFS */}
-            {mode === 'ADFS' && aiStats.threshold !== null && (
-              <div
-                className="rounded-2xl px-4 py-3 flex items-center justify-between"
-                style={{ background: '#0F1629', border: '1.5px solid #8B5CF655' }}
-              >
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8B5CF6' }}>
-                    IDA* Threshold
-                  </p>
-                  <p className="text-xl font-extrabold text-white">{aiStats.threshold}</p>
-                </div>
-                <p className="text-xs text-right max-w-[120px]" style={{ color: '#6B7FAA' }}>
-                  Re-explores all nodes when this increases
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Move Log */}
