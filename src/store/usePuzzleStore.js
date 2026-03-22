@@ -56,6 +56,11 @@ export const usePuzzleStore = create((set, get) => ({
   },
   moveLog: [],
 
+  // —— Playback ——
+  solutionPath: null,
+  playbackStep: 0,
+  isPlayback: false,
+
   // —— Init ——
   initializeBoard: () => {
     get()._stopAll();
@@ -70,6 +75,9 @@ export const usePuzzleStore = create((set, get) => ({
       isPaused: false,
       aiStats: { nodesExplored: 0, frontierSize: 0, pathLength: null, timeMs: 0, f: null, g: null, h: null },
       moveLog: [],
+      solutionPath: null,
+      playbackStep: 0,
+      isPlayback: false,
     });
     algorithmInstance = null;
   },
@@ -119,14 +127,17 @@ export const usePuzzleStore = create((set, get) => ({
       const result = algorithmInstance.solve(board);
       const path = result.path || [];
       set({
-        board: path.length > 0 ? path[path.length - 1] : board,
+        board: path.length > 0 ? path[0] : board,
         isSolved: result.done && path.length > 0,
         isRunning: false,
+        solutionPath: path.length > 0 ? path : null,
+        playbackStep: 0,
+        isPlayback: path.length > 0,
         moveLog: path.map((b, i) => ({ step: i, board: b })),
         aiStats: {
           nodesExplored: result.nodesExplored,
           frontierSize: result.frontierSize,
-          pathLength: path.length - 1,
+          pathLength: path.length > 0 ? path.length - 1 : null,
           timeMs: result.timeMs,
           f: result.f, g: result.g, h: result.h,
         },
@@ -174,8 +185,30 @@ export const usePuzzleStore = create((set, get) => ({
       isPaused: false,
       aiStats: { nodesExplored: 0, frontierSize: 0, pathLength: null, timeMs: 0, f: null, g: null, h: null },
       moveLog: [],
+      solutionPath: null,
+      playbackStep: 0,
+      isPlayback: false,
     });
     algorithmInstance = null;
+  },
+
+  // —— Playback controls ——
+  setPlaybackStep: (step) => {
+    const { solutionPath } = get();
+    if (!solutionPath || step < 0 || step >= solutionPath.length) return;
+    set({ playbackStep: step, board: solutionPath[step] });
+  },
+  playbackNext: () => {
+    const { playbackStep, solutionPath } = get();
+    if (!solutionPath || playbackStep >= solutionPath.length - 1) return;
+    const next = playbackStep + 1;
+    set({ playbackStep: next, board: solutionPath[next] });
+  },
+  playbackPrev: () => {
+    const { playbackStep, solutionPath } = get();
+    if (!solutionPath || playbackStep <= 0) return;
+    const prev = playbackStep - 1;
+    set({ playbackStep: prev, board: solutionPath[prev] });
   },
 
   // —— Human mode ——
@@ -224,22 +257,19 @@ export const usePuzzleStore = create((set, get) => ({
 
     if (result.done) {
       get()._stopAll();
-      set({ isRunning: false, isPaused: false });
-      // Replay the solution path smoothly
-      if (result.path && result.path.length > 1) {
-        get()._replayPath(result.path);
-      }
+      const path = result.path || null;
+      set({
+        isRunning: false,
+        isPaused: false,
+        solutionPath: path,
+        playbackStep: 0,
+        isPlayback: !!path,
+        board: path ? path[0] : get().board,
+      });
     }
   },
 
-  _replayPath: (path) => {
-    let i = 0;
-    const playInterval = setInterval(() => {
-      if (i >= path.length) { clearInterval(playInterval); return; }
-      set({ board: path[i] });
-      i++;
-    }, 80);
-  },
+  // _replayPath removed — replaced by interactive PlaybackPanel
 
   _startInterval: () => {
     clearInterval(intervalId);

@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import PuzzleBoard from './components/board/PuzzleBoard';
 import StatsPanel from './components/panels/StatsPanel';
+import PlaybackPanel from './components/panels/PlaybackPanel';
 import SpeedControl from './components/controls/SpeedControl';
 import ExecutionControls from './components/controls/ExecutionControls';
 import { usePuzzleStore } from './store/usePuzzleStore';
@@ -118,9 +119,10 @@ function App() {
           </div>
         </div>
 
-        {/* CENTER — Board */}
-        <div className="lg:col-span-6 lg:order-2 order-1 flex justify-center items-center py-4">
+        {/* CENTER — Board + Playback */}
+        <div className="lg:col-span-6 lg:order-2 order-1 flex flex-col items-center gap-5 py-4">
           <PuzzleBoard />
+          <PlaybackPanel />
         </div>
 
         {/* RIGHT — Stats */}
