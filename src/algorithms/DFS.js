@@ -3,7 +3,7 @@
 // NOT guaranteed to find shortest path.
 // PRD: AI-05 — must have configurable depth limit (default 50).
 
-import { getValidMoves, applyMove, isGoal } from '../utils/puzzle';
+import { getValidMoves, applyMove, isGoal } from '../utils/puzzle.js';
 
 export class DFS {
   constructor(depthLimit = 50) {

@@ -1,8 +1,10 @@
 import { create } from 'zustand';
-import { generatePuzzle, getValidMoves, applyMove, isGoal, isSolvable } from '../utils/puzzle';
+import { generatePuzzle, getValidMoves, applyMove, isGoal, isSolvable } from '../utils/puzzle.js';
 import { BFS } from '../algorithms/BFS';
 import { DFS } from '../algorithms/DFS';
 import { AStar } from '../algorithms/AStar';
+import { GBFS } from '../algorithms/GBFS';
+import { ADFS } from '../algorithms/ADFS';
 
 // Speed presets: label → ms delay between steps
 export const SPEED_PRESETS = [
@@ -17,8 +19,8 @@ const algorithmFactories = {
   BFS:   () => new BFS(),
   DFS:   () => new DFS(50),
   'A*':  () => new AStar(),
-  GBFS:  null,   // Phase 3
-  ADFS:  null,   // Phase 3
+  GBFS:  () => new GBFS(),
+  ADFS:  () => new ADFS(),
   Human: null,
 };
 

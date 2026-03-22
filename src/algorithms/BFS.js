@@ -3,7 +3,7 @@
 // Guaranteed to find the shortest path.
 // PRD: AI-01 — must solve from any valid shuffled state.
 
-import { getValidMoves, applyMove, isGoal } from '../utils/puzzle';
+import { getValidMoves, applyMove, isGoal } from '../utils/puzzle.js';
 
 export class BFS {
   constructor() {

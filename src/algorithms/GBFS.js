@@ -1,6 +1,6 @@
-// A* Search
-// Uses f(n) = g(n) + h(n) where h is Manhattan Distance.
-// Always finds the optimal (shortest) path.
+// GBFS — Greedy Best-First Search
+// Uses f(n) = h(n) where h is Manhattan Distance.
+// NOT guaranteed to find the optimal path, but often fast.
 // PRD: Must expose f, g, h values per node in stats panel.
 
 import { getValidMoves, applyMove, isGoal, getManhattanDistance } from '../utils/puzzle.js';
@@ -28,7 +28,7 @@ class MinHeap {
   _bubbleUp(i) {
     while (i > 0) {
       const parent = Math.floor((i - 1) / 2);
-      if (this.heap[parent].f <= this.heap[i].f) break;
+      if (this.heap[parent].h <= this.heap[i].h) break;
       [this.heap[parent], this.heap[i]] = [this.heap[i], this.heap[parent]];
       i = parent;
     }
@@ -39,8 +39,8 @@ class MinHeap {
     while (true) {
       let smallest = i;
       const l = 2 * i + 1, r = 2 * i + 2;
-      if (l < n && this.heap[l].f < this.heap[smallest].f) smallest = l;
-      if (r < n && this.heap[r].f < this.heap[smallest].f) smallest = r;
+      if (l < n && this.heap[l].h < this.heap[smallest].h) smallest = l;
+      if (r < n && this.heap[r].h < this.heap[smallest].h) smallest = r;
       if (smallest === i) break;
       [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
       i = smallest;
@@ -48,7 +48,7 @@ class MinHeap {
   }
 }
 
-export class AStar {
+export class GBFS {
   constructor() {
     this.openList = new MinHeap();
     this.visited = new Map(); // key → lowest g seen
@@ -107,7 +107,7 @@ export class AStar {
           board: newBoard,
           g: newG,
           h,
-          f: newG + h,
+          f: h,
           path: [...node.path, newBoard],
         });
       }
